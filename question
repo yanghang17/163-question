@@ -1,0 +1,60 @@
+JS中有哪些场景会出现隐式类型转换？
+       1.   3 + true;       // 4     (true ==1 , false == 0) 
+             3 + false;     //3
+     
+       2. 数字+字符串/字符串+数字
+            “2” + 3；        //23  （数字和字符串相加，不管在前，在后，都会自动把数字转化成字符）
+             2 + “3”；       //23
+       
+       3.  用" .  ” 操作时，JS会把直接量转化成对象，来调用相应的方法。
+         123.__proto__   //tostring.....等等
+         123.constructor     //function Number()  { [native code] }
+       4.  用" .  ” 操作时，JS会把直接量转化成对象，来调用相应的方法。
+        5.  ==等运算
+        "3" == 3   //true  (把字符串转换成数字，再进行比较）
+
+JS和强类型语言（比如C++）在类型方面的主要区别？​
+   强/偌类型，指类型的检查的严格程度​
+   1.  JS，  解释一条语言，执行一条
+   2. 强类，一个编译器，一次性把所有语言，转换成计算机语言
+  
+   1. JS，变量只需要声明，不需要强制规定类型，也会容易类型出错
+   2. 强类，声明变量时，需要说明是属于声明类型的变量 ，严格定义
+
+  1. JS， 可以隐式的转换类型  “1” +2  //12
+  2. 强类，必须要有显示的进行转换。否则不能将其视为其他类型。
+（1）动态类型语言：动态类型语言是指在运行期间才去做数据类型检查的语言，也就是说，在用动态类型的语言编程时，永远也不用给任何变量指定数据类型，该语言会在你第一次赋值给变量时，在内部将数据类型记录下来。Python和Ruby就是一种典型的动态类型语言，其他的各种脚本语言如VBScript也多少属于动态类型语言。
+（2）静态类型语言：静态类型语言与动态类型语言刚好相反，它的数据类型是在编译其间检查的，也就是说在写程序时要声明所有变量的数据类型，C/C++是静态类型语言的典型代表，其他的静态类型语言还有C#、JAVA等。
+
+JS中有哪些识别类型的方法（包括用于识别某种具体类型的方法）？
+类型识别：
+  1. typeof 操作符
+可以识别标准类型（Null除外）
+typeof Null    //Object
+不能识别具体的对象类型
+function除外
+typeof function() {}   //function
+
+  2. instanceof
+能够判别内置对象类型
+不能判别所有原始类型
+1 instanceof Number   //false
+
+  3. Object.prototype.tostring.call
+可以识别标准类型笔记内置（build-in）对象类型
+不能识别自定义对象类型
+需要封装起来一个函数来使用
+function type(obj) {
+return Object.prototype.tostring.call(obj).slice(8,-1)
+}
+
+  4. constructor  
+判断标准类型（undefined/Null除外，因为灭有构造函数）
+可以判断内置对象类型
+可以判断自定义对象类型
+生成这个对象的构造函数的本身
+“jerry”.constructor === string    //true
+         可以封装一个函数，来提取出她的      
+         function getConstructorName(obj){
+             return (obj===undefined||obj===null)?obj:(obj.constructor&&obj.constructor.toString().match(/function\s*([^(]*)/)[1]);
+}
